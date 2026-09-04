@@ -1,0 +1,368 @@
+{
+  "info": {
+    "_postman_id": "7f2b6b7a-1a2d-4c3e-9c1a-solar-tracker-cf9",
+    "name": "Solar Tracker API (AUEB CF9)",
+    "description": "Run requests top-to-bottom within each folder. 'Login (admin)' and 'Register Device' save values into collection variables that later requests reuse automatically — no manual copy/pasting needed.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "access_token", "value": "" },
+    { "key": "device_id", "value": "" },
+    { "key": "device_api_key", "value": "" },
+    { "key": "command_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth & Users",
+      "item": [
+        {
+          "name": "Register (admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"adminpass123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/users/register", "host": ["{{base_url}}"], "path": ["users", "register"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Register (regular user)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"regularuser\",\n  \"password\": \"userpass123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/users/register", "host": ["{{base_url}}"], "path": ["users", "register"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Login (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('access_token', body.access_token);",
+                  "pm.test('got an access token', () => pm.expect(body.access_token).to.be.a('string'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "username", "value": "admin" },
+                { "key": "password", "value": "adminpass123" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Me (current user)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": { "raw": "{{base_url}}/users/me", "host": ["{{base_url}}"], "path": ["users", "me"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Devices (admin)",
+      "item": [
+        {
+          "name": "Register Device",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('device_id', body.id);",
+                  "pm.collectionVariables.set('device_api_key', body.api_key);",
+                  "pm.test('got a device id and api key', () => {",
+                  "  pm.expect(body.id).to.be.a('number');",
+                  "  pm.expect(body.api_key).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"postman-test-device\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/devices", "host": ["{{base_url}}"], "path": ["devices"] }
+          },
+          "response": []
+        },
+        {
+          "name": "List Devices",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": { "raw": "{{base_url}}/devices", "host": ["{{base_url}}"], "path": ["devices"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Device",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/devices/{{device_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["devices", "{{device_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Measurements",
+      "item": [
+        {
+          "name": "Report Sensor Reading (device)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Device-API-Key", "value": "{{device_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ldr_top_left\": 620.0,\n  \"ldr_top_right\": 640.0,\n  \"ldr_bottom_left\": 590.0,\n  \"ldr_bottom_right\": 605.0,\n  \"x_angle\": 90.0,\n  \"y_angle\": 90.0\n}"
+            },
+            "url": { "raw": "{{base_url}}/measurements/sensor", "host": ["{{base_url}}"], "path": ["measurements", "sensor"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Report Power Reading - Panel (device)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Device-API-Key", "value": "{{device_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source\": \"panel\",\n  \"voltage\": 18.3,\n  \"current\": 1.6,\n  \"power\": 29.3\n}"
+            },
+            "url": { "raw": "{{base_url}}/measurements/power", "host": ["{{base_url}}"], "path": ["measurements", "power"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Report Power Reading - Load (device)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Device-API-Key", "value": "{{device_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source\": \"load\",\n  \"voltage\": 5.0,\n  \"current\": 0.35,\n  \"power\": 1.75\n}"
+            },
+            "url": { "raw": "{{base_url}}/measurements/power", "host": ["{{base_url}}"], "path": ["measurements", "power"] }
+          },
+          "response": []
+        },
+        {
+          "name": "List Sensor Readings (admin only)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/measurements/sensor/{{device_id}}?limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["measurements", "sensor", "{{device_id}}"],
+              "query": [{ "key": "limit", "value": "20" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Power Readings (role-filtered)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/measurements/power/{{device_id}}?limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["measurements", "power", "{{device_id}}"],
+              "query": [{ "key": "limit", "value": "20" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Energy",
+      "item": [
+        {
+          "name": "List Energy Aggregates (role-filtered)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/energy/{{device_id}}?limit=100",
+              "host": ["{{base_url}}"],
+              "path": ["energy", "{{device_id}}"],
+              "query": [{ "key": "limit", "value": "100" }]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Servo",
+      "item": [
+        {
+          "name": "Issue Command (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('command_id', body.id);",
+                  "pm.test('command created as pending', () => pm.expect(body.status).to.eql('pending'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_x_angle\": 45.0,\n  \"target_y_angle\": 120.0\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/servo/{{device_id}}/commands",
+              "host": ["{{base_url}}"],
+              "path": ["servo", "{{device_id}}", "commands"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Commands (admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/servo/{{device_id}}/commands",
+              "host": ["{{base_url}}"],
+              "path": ["servo", "{{device_id}}", "commands"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pending Commands (device)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-Device-API-Key", "value": "{{device_api_key}}" }],
+            "url": { "raw": "{{base_url}}/servo/commands/pending", "host": ["{{base_url}}"], "path": ["servo", "commands", "pending"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Command Status (device)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Device-API-Key", "value": "{{device_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"done\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/servo/commands/{{command_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["servo", "commands", "{{command_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Report Position (device)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Device-API-Key", "value": "{{device_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"x_angle\": 45.0,\n  \"y_angle\": 120.0\n}"
+            },
+            "url": { "raw": "{{base_url}}/servo/position", "host": ["{{base_url}}"], "path": ["servo", "position"] }
+          },
+          "response": []
+        },
+        {
+          "name": "List Positions (admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/servo/{{device_id}}/position",
+              "host": ["{{base_url}}"],
+              "path": ["servo", "{{device_id}}", "position"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Latest Position (admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": {
+              "raw": "{{base_url}}/servo/{{device_id}}/position/latest",
+              "host": ["{{base_url}}"],
+              "path": ["servo", "{{device_id}}", "position", "latest"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
