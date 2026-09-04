@@ -7,8 +7,8 @@ and PowerReadingSimpleOut (regular users, panel-only wattage/voltage).
 
 from pydantic import BaseModel, Field
 
-from backend.app.models.power_reading import PowerSource
-from backend.app.schemas.common import UtcDatetime
+from app.models.power_reading import PowerSource
+from app.schemas.common import UtcDatetime
 
 
 class PowerReadingCreate(BaseModel):

@@ -7,10 +7,10 @@ GET  /users/me       — current user info (auth required)
 
 from fastapi import APIRouter, status
 
-from backend.app.dependencies import AdminUser, CurrentUser, SessionDep
-from backend.app.repositories.user_repository import UserRepository
-from backend.app.schemas.user import UserCreate, UserOut
-from backend.app.services.user_service import register_user
+from app.dependencies import AdminUser, CurrentUser, SessionDep
+from app.repositories.user_repository import UserRepository
+from app.schemas.user import UserCreate, UserOut
+from app.services.user_service import register_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 

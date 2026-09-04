@@ -4,7 +4,7 @@ ServoPosition Repository — DB access only, no business logic.
 
 from sqlmodel import Session, delete, select
 
-from backend.app.models.servo_position import ServoPosition
+from app.models.servo_position import ServoPosition
 
 
 class ServoPositionRepository:

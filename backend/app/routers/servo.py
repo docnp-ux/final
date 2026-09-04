@@ -16,17 +16,17 @@ a device only ever acts on its own commands/position):
 
 from fastapi import APIRouter, status
 
-from backend.app.dependencies import AdminUser, CurrentDevice, Page, SessionDep
-from backend.app.repositories.device_repository import DeviceRepository
-from backend.app.repositories.servo_command_repository import ServoCommandRepository
-from backend.app.repositories.servo_position_repository import ServoPositionRepository
-from backend.app.schemas.servo_command import (
+from app.dependencies import AdminUser, CurrentDevice, Page, SessionDep
+from app.repositories.device_repository import DeviceRepository
+from app.repositories.servo_command_repository import ServoCommandRepository
+from app.repositories.servo_position_repository import ServoPositionRepository
+from app.schemas.servo_command import (
     ServoCommandCreate,
     ServoCommandOut,
     ServoCommandStatusUpdate,
 )
-from backend.app.schemas.servo_position import ServoPositionCreate, ServoPositionOut
-from backend.app.services import servo_service
+from app.schemas.servo_position import ServoPositionCreate, ServoPositionOut
+from app.services import servo_service
 
 router = APIRouter(prefix="/servo", tags=["servo"])
 

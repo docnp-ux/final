@@ -16,17 +16,17 @@ import time
 import uuid
 from contextlib import asynccontextmanager
 
-from backend.app.routers import auth, devices, energy, measurements, servo
+from app.routers import auth, devices, energy, measurements, servo
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-from backend.app.config import get_settings
-from backend.app.db import create_db_and_tables
-from backend.app.exceptions import register_exception_handlers
-from backend.app.routers import users
+from app.config import get_settings
+from app.db import create_db_and_tables
+from app.exceptions import register_exception_handlers
+from app.routers import users
 
 settings = get_settings()
 

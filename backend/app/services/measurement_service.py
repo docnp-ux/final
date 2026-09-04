@@ -7,18 +7,18 @@ See app.schemas.power_reading.PowerReadingSimpleOut and §5.4 of the
 project's domain design notes.
 """
 
-from backend.app.models.device import Device
-from backend.app.models.power_reading import PowerReading, PowerSource
-from backend.app.models.sensor_reading import SensorReading
-from backend.app.models.user import User
-from backend.app.repositories.device_repository import DeviceRepository
-from backend.app.repositories.energy_aggregate_repository import EnergyAggregateRepository
-from backend.app.repositories.power_reading_repository import PowerReadingRepository
-from backend.app.repositories.sensor_reading_repository import SensorReadingRepository
-from backend.app.schemas.power_reading import PowerReadingCreate
-from backend.app.schemas.sensor_reading import SensorReadingCreate
-from backend.app.services import energy_service
-from backend.app.services import device_service
+from app.models.device import Device
+from app.models.power_reading import PowerReading, PowerSource
+from app.models.sensor_reading import SensorReading
+from app.models.user import User
+from app.repositories.device_repository import DeviceRepository
+from app.repositories.energy_aggregate_repository import EnergyAggregateRepository
+from app.repositories.power_reading_repository import PowerReadingRepository
+from app.repositories.sensor_reading_repository import SensorReadingRepository
+from app.schemas.power_reading import PowerReadingCreate
+from app.schemas.sensor_reading import SensorReadingCreate
+from app.services import energy_service
+from app.services import device_service
 
 
 def compute_ldr_derived_fields(

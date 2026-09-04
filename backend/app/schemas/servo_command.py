@@ -4,8 +4,8 @@ ServoCommand Schemas — Pydantic models for request/response contracts.
 
 from pydantic import BaseModel, Field
 
-from backend.app.models.servo_command import ServoCommandStatus
-from backend.app.schemas.common import UtcDatetime
+from app.models.servo_command import ServoCommandStatus
+from app.schemas.common import UtcDatetime
 
 
 class ServoCommandCreate(BaseModel):

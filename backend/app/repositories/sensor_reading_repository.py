@@ -4,7 +4,7 @@ SensorReading Repository — DB access only, no business logic.
 
 from sqlmodel import Session, delete, select
 
-from backend.app.models.sensor_reading import SensorReading
+from app.models.sensor_reading import SensorReading
 
 
 class SensorReadingRepository:

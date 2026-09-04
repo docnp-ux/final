@@ -10,11 +10,11 @@ aggregate for the current hour converges as more readings arrive.
 
 from datetime import datetime, timedelta
 
-from backend.app.models.energy_aggregate import EnergyAggregate
-from backend.app.models.power_reading import PowerReading, PowerSource
-from backend.app.models.user import User
-from backend.app.repositories.energy_aggregate_repository import EnergyAggregateRepository
-from backend.app.repositories.power_reading_repository import PowerReadingRepository
+from app.models.energy_aggregate import EnergyAggregate
+from app.models.power_reading import PowerReading, PowerSource
+from app.models.user import User
+from app.repositories.energy_aggregate_repository import EnergyAggregateRepository
+from app.repositories.power_reading_repository import PowerReadingRepository
 
 
 def _floor_to_hour(timestamp: datetime) -> datetime:

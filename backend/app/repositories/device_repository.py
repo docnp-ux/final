@@ -6,7 +6,7 @@ from datetime import datetime
 
 from sqlmodel import Session, select
 
-from backend.app.models.device import Device
+from app.models.device import Device
 
 
 class DeviceRepository:

@@ -7,7 +7,7 @@ there is no simplified "regular user" schema here.
 
 from pydantic import BaseModel, Field
 
-from backend.app.schemas.common import UtcDatetime
+from app.schemas.common import UtcDatetime
 
 
 class SensorReadingCreate(BaseModel):

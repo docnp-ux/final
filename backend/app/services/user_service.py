@@ -5,11 +5,11 @@ No direct DB session handling here: everything goes through
 UserRepository.
 """
 
-from backend.app.exceptions import BusinessError
-from backend.app.models.user import User
-from backend.app.repositories.user_repository import UserRepository
-from backend.app.schemas.user import UserCreate
-from backend.app.security import hash_password
+from app.exceptions import BusinessError
+from app.models.user import User
+from app.repositories.user_repository import UserRepository
+from app.schemas.user import UserCreate
+from app.security import hash_password
 
 
 def register_user(repo: UserRepository, data: UserCreate) -> User:

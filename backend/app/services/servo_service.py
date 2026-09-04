@@ -9,16 +9,16 @@ acknowledged -> done lifecycle.
 
 from fastapi import HTTPException, status
 
-from backend.app.models.device import Device
-from backend.app.models.servo_command import ServoCommand
-from backend.app.models.servo_position import ServoPosition
-from backend.app.models.user import User
-from backend.app.repositories.device_repository import DeviceRepository
-from backend.app.repositories.servo_command_repository import ServoCommandRepository
-from backend.app.repositories.servo_position_repository import ServoPositionRepository
-from backend.app.schemas.servo_command import ServoCommandCreate, ServoCommandStatusUpdate
-from backend.app.schemas.servo_position import ServoPositionCreate
-from backend.app.services import device_service
+from app.models.device import Device
+from app.models.servo_command import ServoCommand
+from app.models.servo_position import ServoPosition
+from app.models.user import User
+from app.repositories.device_repository import DeviceRepository
+from app.repositories.servo_command_repository import ServoCommandRepository
+from app.repositories.servo_position_repository import ServoPositionRepository
+from app.schemas.servo_command import ServoCommandCreate, ServoCommandStatusUpdate
+from app.schemas.servo_position import ServoPositionCreate
+from app.services import device_service
 
 
 def issue_command(

@@ -5,15 +5,15 @@ Device Service — registration and heartbeat business logic.
 import secrets
 from datetime import datetime, timezone
 
-from backend.app.exceptions import BusinessError
-from backend.app.models.device import Device
-from backend.app.models.user import User
-from backend.app.repositories.device_repository import DeviceRepository
-from backend.app.repositories.energy_aggregate_repository import EnergyAggregateRepository
-from backend.app.repositories.power_reading_repository import PowerReadingRepository
-from backend.app.repositories.sensor_reading_repository import SensorReadingRepository
-from backend.app.repositories.servo_command_repository import ServoCommandRepository
-from backend.app.repositories.servo_position_repository import ServoPositionRepository
+from app.exceptions import BusinessError
+from app.models.device import Device
+from app.models.user import User
+from app.repositories.device_repository import DeviceRepository
+from app.repositories.energy_aggregate_repository import EnergyAggregateRepository
+from app.repositories.power_reading_repository import PowerReadingRepository
+from app.repositories.sensor_reading_repository import SensorReadingRepository
+from app.repositories.servo_command_repository import ServoCommandRepository
+from app.repositories.servo_position_repository import ServoPositionRepository
 
 
 def register_device(repo: DeviceRepository, name: str, owner_id: int) -> Device:

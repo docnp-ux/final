@@ -4,7 +4,7 @@ ServoPosition Schemas — Pydantic models for request/response contracts.
 
 from pydantic import BaseModel, Field
 
-from backend.app.schemas.common import UtcDatetime
+from app.schemas.common import UtcDatetime
 
 
 class ServoPositionCreate(BaseModel):

@@ -4,8 +4,8 @@ EnergyAggregate Schemas — Pydantic models for request/response contracts.
 
 from pydantic import BaseModel
 
-from backend.app.models.power_reading import PowerSource
-from backend.app.schemas.common import UtcDatetime
+from app.models.power_reading import PowerSource
+from app.schemas.common import UtcDatetime
 
 
 class EnergyAggregateOut(BaseModel):

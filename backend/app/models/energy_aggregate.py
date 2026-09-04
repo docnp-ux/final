@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 
 from sqlmodel import Field, SQLModel
 
-from backend.app.models.power_reading import PowerSource
+from app.models.power_reading import PowerSource
 
 
 def _utcnow() -> datetime:

@@ -9,10 +9,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from backend.app.dependencies import SessionDep
-from backend.app.repositories.user_repository import UserRepository
-from backend.app.security import create_access_token
-from backend.app.services.auth_service import authenticate_user
+from app.dependencies import SessionDep
+from app.repositories.user_repository import UserRepository
+from app.security import create_access_token
+from app.services.auth_service import authenticate_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

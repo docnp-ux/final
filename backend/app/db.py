@@ -7,7 +7,7 @@ The session is injected as a dependency via get_session().
 
 from sqlmodel import Session, SQLModel, create_engine
 
-from backend.app.config import get_settings
+from app.config import get_settings
 
 settings = get_settings()
 

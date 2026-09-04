@@ -9,18 +9,18 @@ GET  /measurements/power/{id}       — power history for a device, role-filtere
 
 from fastapi import APIRouter, status
 
-from backend.app.dependencies import AdminUser, CurrentDevice, CurrentUser, Page, SessionDep
-from backend.app.repositories.device_repository import DeviceRepository
-from backend.app.repositories.energy_aggregate_repository import EnergyAggregateRepository
-from backend.app.repositories.power_reading_repository import PowerReadingRepository
-from backend.app.repositories.sensor_reading_repository import SensorReadingRepository
-from backend.app.schemas.power_reading import (
+from app.dependencies import AdminUser, CurrentDevice, CurrentUser, Page, SessionDep
+from app.repositories.device_repository import DeviceRepository
+from app.repositories.energy_aggregate_repository import EnergyAggregateRepository
+from app.repositories.power_reading_repository import PowerReadingRepository
+from app.repositories.sensor_reading_repository import SensorReadingRepository
+from app.schemas.power_reading import (
     PowerReadingCreate,
     PowerReadingOut,
     PowerReadingSimpleOut,
 )
-from backend.app.schemas.sensor_reading import SensorReadingCreate, SensorReadingOut
-from backend.app.services import measurement_service
+from app.schemas.sensor_reading import SensorReadingCreate, SensorReadingOut
+from app.services import measurement_service
 
 router = APIRouter(prefix="/measurements", tags=["measurements"])
 

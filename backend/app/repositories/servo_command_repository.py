@@ -4,7 +4,7 @@ ServoCommand Repository — DB access only, no business logic.
 
 from sqlmodel import Session, delete, select
 
-from backend.app.models.servo_command import ServoCommand, ServoCommandStatus
+from app.models.servo_command import ServoCommand, ServoCommandStatus
 
 
 class ServoCommandRepository:

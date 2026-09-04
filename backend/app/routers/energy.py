@@ -7,10 +7,10 @@ GET /energy/{device_id} — regular users see panel generation only,
 
 from fastapi import APIRouter
 
-from backend.app.dependencies import CurrentUser, Page, SessionDep
-from backend.app.repositories.energy_aggregate_repository import EnergyAggregateRepository
-from backend.app.schemas.energy_aggregate import EnergyAggregateOut
-from backend.app.services import energy_service
+from app.dependencies import CurrentUser, Page, SessionDep
+from app.repositories.energy_aggregate_repository import EnergyAggregateRepository
+from app.schemas.energy_aggregate import EnergyAggregateOut
+from app.services import energy_service
 
 router = APIRouter(prefix="/energy", tags=["energy"])
 

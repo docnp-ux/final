@@ -6,7 +6,7 @@ from datetime import datetime
 
 from sqlmodel import Session, delete, select
 
-from backend.app.models.power_reading import PowerReading, PowerSource
+from app.models.power_reading import PowerReading, PowerSource
 
 
 class PowerReadingRepository:

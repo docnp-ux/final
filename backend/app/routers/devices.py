@@ -10,16 +10,16 @@ DELETE /devices/{id}    — delete a device and its data. Admin only.
 
 from fastapi import APIRouter, HTTPException, status
 
-from backend.app.dependencies import AdminUser, CurrentUser, Page, SessionDep
-from backend.app.repositories.device_repository import DeviceRepository
-from backend.app.repositories.energy_aggregate_repository import EnergyAggregateRepository
-from backend.app.repositories.power_reading_repository import PowerReadingRepository
-from backend.app.repositories.sensor_reading_repository import SensorReadingRepository
-from backend.app.repositories.servo_command_repository import ServoCommandRepository
-from backend.app.repositories.servo_position_repository import ServoPositionRepository
-from backend.app.repositories.user_repository import UserRepository
-from backend.app.schemas.device import DeviceCreate, DeviceCreatedOut, DeviceOut
-from backend.app.services import device_service
+from app.dependencies import AdminUser, CurrentUser, Page, SessionDep
+from app.repositories.device_repository import DeviceRepository
+from app.repositories.energy_aggregate_repository import EnergyAggregateRepository
+from app.repositories.power_reading_repository import PowerReadingRepository
+from app.repositories.sensor_reading_repository import SensorReadingRepository
+from app.repositories.servo_command_repository import ServoCommandRepository
+from app.repositories.servo_position_repository import ServoPositionRepository
+from app.repositories.user_repository import UserRepository
+from app.schemas.device import DeviceCreate, DeviceCreatedOut, DeviceOut
+from app.services import device_service
 
 router = APIRouter(prefix="/devices", tags=["devices"])
 

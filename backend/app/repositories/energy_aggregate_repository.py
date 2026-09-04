@@ -6,8 +6,8 @@ from datetime import datetime
 
 from sqlmodel import Session, delete, select
 
-from backend.app.models.energy_aggregate import EnergyAggregate
-from backend.app.models.power_reading import PowerSource
+from app.models.energy_aggregate import EnergyAggregate
+from app.models.power_reading import PowerSource
 
 
 class EnergyAggregateRepository:

@@ -16,10 +16,10 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlmodel import Session, select
 
-from backend.app.config import get_settings
-from backend.app.db import get_session
-from backend.app.models.device import Device
-from backend.app.models.user import User
+from app.config import get_settings
+from app.db import get_session
+from app.models.device import Device
+from app.models.user import User
 
 settings = get_settings()
 
