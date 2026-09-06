@@ -19,6 +19,7 @@ device would send — see [No hardware? Run the simulator](#no-hardware-run-the-
 - [API docs](#api-docs)
 - [Testing](#testing)
 - [Real hardware firmware](#real-hardware-firmware)
+- [Quick reference: all commands](#quick-reference-all-commands)
 - [Design decisions](#design-decisions)
 
 ## Architecture
@@ -198,6 +199,58 @@ averaged-reading shape the simulator sends). See
 [`firmware/README.md`](firmware/README.md) for wiring, setup, and the
 onboard status-LED meaning. INA219 power sensors and servo control are a
 planned follow-up stage.
+
+## Quick reference: all commands
+
+Everything below assumes the containers are already up
+(`docker compose up --build -d`); `solar-tracker-backend` is the fixed
+container name from `docker-compose.yml`.
+
+**Lifecycle**
+
+```bash
+docker compose up --build -d      # build + start everything
+docker ps                         # check the 3 containers are healthy
+docker compose down               # stop, keep the data
+docker compose down -v            # stop and wipe the database too
+```
+
+**Seed history only (no live traffic)**
+
+```bash
+docker exec solar-tracker-backend uv run --no-dev python scripts/seed.py --days 2
+```
+
+**Seed + live simulation, one device**
+
+```bash
+docker exec solar-tracker-backend uv run --no-dev python scripts/demo.py --days 2
+```
+
+**Multiple simulated devices** — run once per device, each in its own
+terminal, with a different `--device-name`:
+
+```bash
+docker exec solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-01 --days 2
+docker exec solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-02 --days 1
+docker exec solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-03 --days 1
+```
+
+**Running scripts locally instead of through Docker** (needs `uv sync` in
+`backend/` first, and nothing else already bound to port 5432):
+
+```bash
+cd backend
+uv run scripts/demo.py --device-name sim-esp32-02 --days 1
+uv run simulate_esp32.py --api-key <device_api_key>
+```
+
+**Tests**
+
+```bash
+cd backend
+uv run pytest
+```
 
 ## Design decisions
 
