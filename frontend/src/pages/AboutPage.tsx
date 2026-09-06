@@ -11,9 +11,11 @@ function AboutPage() {
             <section className="space-y-2">
                 <h2 className="text-lg font-semibold">How it works</h2>
                 <p className="text-muted-foreground">
-                    Ο ESP32-S3 διαβάζει 4 αισθητήρες LDR, υπολογίζει τον μέσο όρο τοπικά και
-                    στέλνει τις μετρήσεις στο backend κάθε 5 λεπτά. Ο admin βλέπει ζωντανά
-                    δεδομένα, ιστορικά γραφήματα και μπορεί να ελέγξει χειροκίνητα τα servo.
+                    The Esp32 reads the values from the 4 LDR, calculates their average values
+                    locally and sends them to the backend every 5 minutes.
+                    The user can see the power generated from the device, whereas the admin
+                    can access technical data as current, voltage, servo positions, etc.
+                    as well as override their current position.
                 </p>
             </section>
 
@@ -30,7 +32,7 @@ function AboutPage() {
             <section className="space-y-2">
                 <h2 className="text-lg font-semibold">Author</h2>
                 <p className="text-muted-foreground">
-                    Ιατρου Νικόλαος — AUEB Coding Factory 9, 2026.
+                    Iatrou Nikolaos — AUEB Coding Factory 9, 2026.
                 </p>
             </section>
         </div>
