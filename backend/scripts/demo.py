@@ -38,13 +38,14 @@ def main() -> None:
         default=15.0,
         help="Shorter than simulate_esp32.py's own 300s default, so the demo feels alive right away",
     )
+    parser.add_argument("--device-name", default="sim-esp32-01")
     args = parser.parse_args()
 
-    seed(args.days, args.interval_minutes)
+    seed(args.days, args.interval_minutes, args.device_name)
 
     with Session(engine) as session:
         admin = get_or_create_admin(session)
-        device = get_or_create_device(session, "sim-esp32-01", admin.id)
+        device = get_or_create_device(session, args.device_name, admin.id)
         api_key = device.api_key
 
     print(f"\nSeeded. Now simulating live traffic for '{device.name}' (Ctrl+C to stop)...\n")

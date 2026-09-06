@@ -63,11 +63,11 @@ def get_or_create_device(session: Session, name: str, owner_id: int) -> Device:
     return device
 
 
-def seed(days: int, interval_minutes: int) -> None:
+def seed(days: int, interval_minutes: int, device_name: str = "sim-esp32-01") -> None:
     create_db_and_tables()
     with Session(engine) as session:
         admin = get_or_create_admin(session)
-        device = get_or_create_device(session, "sim-esp32-01", admin.id)
+        device = get_or_create_device(session, device_name, admin.id)
 
         end = datetime.now(timezone.utc)
         timestamp = end - timedelta(days=days)
@@ -116,5 +116,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Backfill historical demo data.")
     parser.add_argument("--days", type=int, default=3)
     parser.add_argument("--interval-minutes", type=int, default=15)
+    parser.add_argument("--device-name", default="sim-esp32-01")
     args = parser.parse_args()
-    seed(args.days, args.interval_minutes)
+    seed(args.days, args.interval_minutes, args.device_name)
