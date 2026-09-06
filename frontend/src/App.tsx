@@ -4,6 +4,7 @@ import AdminRoute from '@/components/AdminRoute'
 import AppLayout from '@/components/AppLayout'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import RouterLayout from '@/components/RouterLayout'
+import AboutPage from '@/pages/AboutPage'
 import DeviceRegisterPage from '@/pages/DeviceRegisterPage'
 import DevicesPage from '@/pages/DevicesPage'
 import DeviceGraphsPage from '@/pages/device/DeviceGraphsPage'
@@ -26,6 +27,7 @@ function App() {
 
       <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="about" element={<AboutPage />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="devices" element={<DevicesPage />} />

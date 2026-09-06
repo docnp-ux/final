@@ -36,7 +36,7 @@ function Sidebar() {
     if (!isAuthenticated) return
     listDevices()
       .then(setDevices)
-      .catch(() => {})
+      .catch(() => { })
     // Refetch on every route change (not just once on login) so a newly
     // registered device shows up in the switcher instead of leaving the
     // <select> pointed at a stale option list.
@@ -47,6 +47,9 @@ function Sidebar() {
       <nav className="space-y-1">
         <NavLink to="/" end className={navLinkClass}>
           Home
+        </NavLink>
+        <NavLink to="/about" end className={navLinkClass}>
+          About
         </NavLink>
         {isAuthenticated && (
           <NavLink to="/devices" end className={navLinkClass}>
