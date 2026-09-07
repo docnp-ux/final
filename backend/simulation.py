@@ -69,8 +69,13 @@ def simulate_tracking_angle(moment: datetime) -> dict:
 
 def simulate_panel_reading(factor: float) -> dict:
     """INA219 reading for the solar panel's own output."""
-    voltage = round(16 + factor * 3.5, 2)
-    current = round(factor * 2.2, 2)
+    if factor <= 0:
+        voltage = current = 0.0
+    else:
+        # Open-circuit voltage climbs steeply in dim light and then plateaus
+        # near Voc — it tracks irradiance far less linearly than current does.
+        voltage = round(19.5 * factor**0.25, 2)
+        current = round(factor * 2.2, 2)
     return {
         "source": "panel",
         "voltage": voltage,
