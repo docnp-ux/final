@@ -9,10 +9,10 @@ device would send — see [No hardware? Run the simulator](#no-hardware-run-the-
 
 ## Contents
 
+- [Getting started](#getting-started)
 - [Architecture](#architecture)
 - [Tech stack](#tech-stack)
 - [Repository layout](#repository-layout)
-- [Quickest path: Docker Compose](#quickest-path-docker-compose)
 - [No hardware? Run the simulator](#no-hardware-run-the-simulator)
 - [Local development (without Docker)](#local-development-without-docker)
 - [Authentication](#authentication)
@@ -21,6 +21,92 @@ device would send — see [No hardware? Run the simulator](#no-hardware-run-the-
 - [Real hardware firmware](#real-hardware-firmware)
 - [Quick reference: all commands](#quick-reference-all-commands)
 - [Design decisions](#design-decisions)
+
+## Getting started
+
+Everything runs in Docker, so you don't need Python, Node or PostgreSQL on
+your machine — and there are no `.env` files to fill in, since every
+setting lives in `docker-compose.yml`.
+
+### 1. Install Docker
+
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+and make sure it is running before you continue.
+
+### 2. Clone the repository
+
+```bash
+git clone https://github.com/docnp-ux/final.git
+cd final
+```
+
+### 3. Build and start the stack
+
+```bash
+docker compose up --build -d
+```
+
+The first build takes a few minutes — it pulls the Postgres image and
+installs both the Python and Node dependencies. `-d` runs everything in
+the background; leave it out if you'd rather watch the logs.
+
+### 4. Confirm all three containers are up
+
+```bash
+docker ps
+```
+
+You should see `solar-tracker-postgres` (healthy), `solar-tracker-backend`
+and `solar-tracker-frontend`.
+
+| Service | URL |
+| --- | --- |
+| Frontend | http://localhost:3001 |
+| Backend API | http://localhost:8000 |
+| Swagger UI | http://localhost:8000/docs |
+
+> Port 3000 is the more conventional choice for the frontend, but 3001 is
+> used here because 3000 may already be taken on the host — see
+> `docker-compose.yml`'s `frontend.ports` if you want to change it.
+
+### 5. Populate the database and start a simulated device
+
+```bash
+docker exec -it solar-tracker-backend uv run --no-dev python scripts/demo.py --days 2
+```
+
+This creates the admin account, backfills two days of history so the
+charts aren't empty, and then keeps posting live readings every 15
+seconds — the same traffic a real ESP32-S3 sends. Leave it running and
+press Ctrl+C when you're done. For history only, without the live part,
+swap `demo.py` for `seed.py` in the command above.
+
+### 6. Log in to the dashboard
+
+Open http://localhost:3001 and sign in:
+
+| Username | Password |
+| --- | --- |
+| `admin` | `adminpass123` |
+
+### 7. Look around
+
+Pick the device from the list, then use the sidebar to move between
+Overview, Live, Sensors, Graphs and Manual Override. On Manual Override,
+set a servo angle and watch the simulator pick the command up within a few
+seconds.
+
+### 8. Shut down
+
+```bash
+docker compose down      # stop, keep the database
+docker compose down -v   # stop and wipe the database too
+```
+
+If Docker complains that port 5432 or 8000 is already allocated, something
+else on the host is bound to it — a local PostgreSQL install is the usual
+culprit. Stop that service, or change the host-side port in
+`docker-compose.yml`.
 
 ## Architecture
 
@@ -61,43 +147,6 @@ firmware/    Real ESP32-S3 Arduino sketch (LDR stage) + its own README
 docker-compose.yml
 ```
 
-## Quickest path: Docker Compose
-
-Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/).
-
-```bash
-docker compose up --build -d
-```
-
-`-d` (detached) starts all three containers in the background and hands
-the terminal straight back — drop it if you'd rather watch the logs in
-the foreground.
-
-| Service | URL |
-| --- | --- |
-| Frontend | http://localhost:3001 |
-| Backend API | http://localhost:8000 |
-| Swagger UI | http://localhost:8000/docs |
-
-> Port 3000 is the more conventional default, but is used here instead
-> because it may already be taken by something else on the host — see
-> `docker-compose.yml`'s `frontend.ports` if you want to change it back.
-
-On first boot the database is empty. Either register an account and a
-device through the UI, or instantly populate a few days of realistic demo
-history:
-
-```bash
-docker exec solar-tracker-backend uv run --no-dev python scripts/seed.py --days 2
-```
-
-(`solar-tracker-backend` is a fixed container name set in `docker-compose.yml`,
-so this works the same no matter what folder you cloned into.) This also
-prints the seeded device's API key, which you can hand to the simulator
-below — or skip straight to
-[No hardware? Run the simulator](#no-hardware-run-the-simulator) for a
-single command that does both at once.
-
 ## No hardware? Run the simulator
 
 `simulate_esp32.py` behaves exactly like the real firmware: it samples
@@ -111,6 +160,9 @@ commands.
 cd backend
 uv run simulate_esp32.py --api-key <device_api_key>
 ```
+
+Both `seed.py` and `demo.py` print the device's API key as they run, and
+registering a device from the dashboard shows it once too.
 
 Useful flags: `--base-url` (default `http://localhost:8000`),
 `--sample-interval` / `--report-interval` in seconds (defaults: sample
@@ -224,16 +276,16 @@ docker exec solar-tracker-backend uv run --no-dev python scripts/seed.py --days 
 **Seed + live simulation, one device**
 
 ```bash
-docker exec solar-tracker-backend uv run --no-dev python scripts/demo.py --days 2
+docker exec -it solar-tracker-backend uv run --no-dev python scripts/demo.py --days 2
 ```
 
 **Multiple simulated devices** — run once per device, each in its own
 terminal, with a different `--device-name`:
 
 ```bash
-docker exec solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-01 --days 2
-docker exec solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-02 --days 1
-docker exec solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-03 --days 1
+docker exec -it solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-01 --days 2
+docker exec -it solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-02 --days 1
+docker exec -it solar-tracker-backend uv run --no-dev python scripts/demo.py --device-name sim-esp32-03 --days 1
 ```
 
 **Running scripts locally instead of through Docker** (needs `uv sync` in
